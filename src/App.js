@@ -41,6 +41,12 @@ const defaultSizes = [
     height: '987',
     color: '#fc727b',
   },
+  {
+    width: 1160,
+    height: 780,
+    label: 'xps 13',
+    color: '#ff692e',
+  },
 ];
 function App() {
   const [dimension, setDimensions] = useState({ width: 0, height: 0, label: '' });
