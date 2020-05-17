@@ -6,33 +6,40 @@ import classnames from 'classnames';
 
 const defaultSizes = [
   {
+    label: 'old xps 15',
+    width: 1406,
+    height: 970,
+    color: '#1ef787',
+  },
+  {
     label: 'mbp 15',
     width: 1375,
     height: 948,
-    color: randomcolor({ hue: 'green', luminosity: 'light' }),
+    color: '#eff229',
   },
   {
     label: 'xps 15',
     width: 1357,
     height: 906,
-    color: randomcolor({ hue: 'blue', luminosity: 'light' }),
+    color: '#1e82e6',
   },
   {
     label: 'xps 17',
     width: 1474,
     height: 976,
-    color: randomcolor({ hue: 'red', luminosity: 'light' }),
+    color: '#ae20f5',
   },
   {
     label: 'mbp 16',
     width: 1409,
     height: 968,
-    color: randomcolor({ hue: 'yellow', luminosity: 'light' }),
+    color: '#e368e1',
   },
   {
     label: 'ms surface 3 15',
     width: '1350',
     height: '987',
+    color: '#fc727b',
   },
 ];
 function App() {
@@ -134,7 +141,6 @@ function App() {
                 return (
                   <li
                     style={{
-                      background: `${size.color}`,
                       padding: '.5rem',
                       cursor: 'pointer',
                       lineHeight: '.9rem',
@@ -148,6 +154,16 @@ function App() {
                     className={classnames({ hidden: size.hide })}
                     title="click to show/hide"
                   >
+                    <span
+                      className="legendIndicator"
+                      style={{
+                        background: size.color,
+                        width: '14px',
+                        height: '10px',
+                        display: 'inline-block',
+                        marginRight: '4px',
+                      }}
+                    ></span>
                     {size.label}: {size.width / 100}"x{size.height / 100}"
                   </li>
                 );

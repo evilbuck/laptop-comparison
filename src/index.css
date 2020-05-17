@@ -32,3 +32,29 @@ legend input[type='checkbox'] {
 legend li.hidden {
   text-decoration: line-through;
 }
+
+#content {
+  overflow: auto;
+}
+.App {
+  height: 970px;
+}
+
+.default-color-1 {
+  background-color: #1ef787;
+}
+.default-color-2 {
+  background-color: #1ee2e6;
+}
+.default-color-3 {
+  background-color: #1e82e6;
+}
+.default-color-4 {
+  background-color: #ae20f5;
+}
+.default-color-5 {
+  background-color: #e368e1;
+}
+.default-color-6 {
+  background-color: #fc727b;
+}
