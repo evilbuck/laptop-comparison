@@ -22,9 +22,13 @@ input[type='text'] {
   margin-left: 1rem;
 }
 legend {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 legend input[type='checkbox'] {
   margin: 0 1.5rem 0 4px;
+}
+
+legend li.hidden {
+  text-decoration: line-through;
 }

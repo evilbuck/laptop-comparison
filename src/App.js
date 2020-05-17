@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import randomcolor from 'randomcolor';
+import classnames from 'classnames';
 
 const defaultSizes = [
   {
@@ -28,6 +29,11 @@ const defaultSizes = [
     height: 968,
     color: randomcolor({ hue: 'yellow', luminosity: 'light' }),
   },
+  {
+    label: 'ms surface 3 15',
+    width: '1350',
+    height: '987',
+  },
 ];
 function App() {
   const [dimension, setDimensions] = useState({ width: 0, height: 0, label: '' });
@@ -40,20 +46,17 @@ function App() {
       throw 'nope';
     }
     laptops = JSON.parse(thing);
-    console.log('inner try', laptops);
   } catch (error) {
-    console.error('catch', laptops);
     laptops = defaultSizes;
   }
-  console.log('sizes top:', laptops);
 
   const [sizes, setSizes] = useState(laptops);
   return (
-    <div className="App">
-      <header>
-        <h3>Add a laptop footprint</h3>
-        <form className="form-inline" style={formStyle}>
-          <div className="row">
+    <div className="App" style={{ paddingBottom: '20px' }}>
+      <header style={{ background: '#efefef', border: '1px solid grey', marginTop: '10px' }}>
+        <h3>Add a laptop footprint to compare (inches)</h3>
+        <div className="row">
+          <form className="form-inline" style={formStyle}>
             <div className="col">
               <label>label</label>
               <input
@@ -86,88 +89,100 @@ function App() {
               />
             </div>
 
-            {/* <div className="col"> */}
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                setDimensions({ width: 0, height: 0, label: '' });
-                let newSizes = sizes.concat({ ...dimension, color: randomcolor() });
+            <div className="col">
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDimensions({ width: 0, height: 0, label: '' });
+                  let dimensionAdjusted = {
+                    ...dimension,
+                    width: dimension.width * 100,
+                    height: dimension.height * 100,
+                    color: randomcolor(),
+                  };
+                  let newSizes = sizes.concat(dimensionAdjusted);
 
-                // save to localstorage
-                localStorage.setItem('laptopSizes', JSON.stringify(newSizes));
-                setSizes(newSizes);
-              }}
-              className="btn btn-primary"
-              style={{ cursor: 'pointer', color: '#fff' }}
-            >
-              Add
-            </a>
-            {/* </div> */}
-          </div>
-        </form>
-      </header>
-      <div>
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            localStorage.setItem('laptopSizes', defaultSizes);
-            setSizes(defaultSizes);
-          }}
-        >
-          reset
-        </button>
-      </div>
-      <legend style={{ textAlign: 'left' }}>
-        <ul style={{ listStyle: 'none', width: '60%' }}>
-          {console.log('sizes:', sizes)}
-          {sizes.reverse().map((size, i) => {
-            return (
-              <li style={{ background: `${size.color}`, padding: '.5rem' }} key={i}>
-                <label>hide</label>
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    let value = e.target.checked;
-                    console.log(value);
-                    size.hide = value;
-                    console.log('hiding', size.label);
-                    setSizes([...sizes]);
-                  }}
-                  value={size.visible}
-                />
-                {size.label} : {size.width / 100}" x {size.height / 100}"
-              </li>
-            );
-          })}
-        </ul>
-      </legend>
-      <div
-        className="content"
-        style={{ width: '1000px', margin: '10px auto', position: 'relative' }}
-      >
-        {sizes
-          .sort((b, a) => {
-            return a.height * a.width - b.height * b.width;
-          })
-          .map((size, i) => {
-            let visibility = size.hide === true ? 'hidden' : 'visible';
-            console.log('size:', size.hide, size.hide === true ? 'hidden' : 'visible');
-            return (
-              <div
-                style={{
-                  background: `${size.color}`,
-                  width: `${size.width * 0.6}px`,
-                  height: `${size.height * 0.6}px`,
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  visibility,
+                  // save to localstorage
+                  localStorage.setItem('laptopSizes', JSON.stringify(newSizes));
+                  setSizes(newSizes);
                 }}
-                key={i}
-              ></div>
-            );
-          })}
+                className="btn btn-primary"
+                style={{ cursor: 'pointer', color: '#fff' }}
+              >
+                Add
+              </a>
+            </div>
+          </form>
+        </div>
+      </header>
+      <div className="row">
+        <div className="col-2" style={{ textAlign: 'left', marginTop: '8px' }}>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              localStorage.setItem('laptopSizes', defaultSizes);
+              setSizes(defaultSizes);
+            }}
+          >
+            reset defaults
+          </button>
+        </div>
+        <div className="col" style={{ height: '125px', overflow: 'auto' }}>
+          <legend style={{ textAlign: 'left' }}>
+            <ul style={{ listStyle: 'none', width: '60%' }}>
+              {sizes.reverse().map((size, i) => {
+                return (
+                  <li
+                    style={{
+                      background: `${size.color}`,
+                      padding: '.5rem',
+                      cursor: 'pointer',
+                      lineHeight: '.9rem',
+                    }}
+                    key={i}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      size.hide = !size.hide;
+                      setSizes([...sizes]);
+                    }}
+                    className={classnames({ hidden: size.hide })}
+                    title="click to show/hide"
+                  >
+                    {size.label}: {size.width / 100}"x{size.height / 100}"
+                  </li>
+                );
+              })}
+            </ul>
+          </legend>
+        </div>
       </div>
+      <div className="row"></div>
+      <div className="row" style={{ margin: '10px auto' }}>
+        <div className="content col" style={{ width: '1000px', position: 'relative' }}>
+          {sizes
+            .sort((b, a) => {
+              return a.height * a.width - b.height * b.width;
+            })
+            .map((size, i) => {
+              let visibility = size.hide === true ? 'hidden' : 'visible';
+              return (
+                <div
+                  style={{
+                    background: `${size.color}`,
+                    width: `${size.width * 0.6}px`,
+                    height: `${size.height * 0.6}px`,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    visibility,
+                  }}
+                  key={i}
+                ></div>
+              );
+            })}
+        </div>
+      </div>
+      <footer style={{ marginTop: '10px' }}></footer>
     </div>
   );
 }
