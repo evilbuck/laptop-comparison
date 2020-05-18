@@ -4,6 +4,10 @@ import './App.css';
 import randomcolor from 'randomcolor';
 import classnames from 'classnames';
 
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-82283734-7');
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const defaultSizes = [
   {
     label: 'old xps 15',
